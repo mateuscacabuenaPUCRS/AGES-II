@@ -1,0 +1,52 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1>Planos de Ensino</h1>
+    <div class="d-flex align-items-center">
+      <app-lesson-plan-modal (saveLessonPlan)="handleSave($event)">
+        <button class="btn btn-link">
+          <bi name="plus-square" class="icon-search" />
+        </button>
+      </app-lesson-plan-modal>
+      <input id="search-input" type="text" class="form-control border rounded" placeholder="Buscar"
+        [formControl]="filter" />
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Objetivo</th>
+          <th scope="col">Categoria</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (lessonPlan of lessonPlans$ | async; track lessonPlan.id; let i = $index) {
+        <tr class="align-middle">
+          <td><ngb-highlight [result]="lessonPlan.modality" [term]="filter.value" /></td>
+          <td><ngb-highlight [result]="translateLevels(lessonPlan.level)" [term]="filter.value" /></td>
+          <td>
+            <div class="list-actions">
+              <app-lesson-plan-modal [lessonPlan]="lessonPlan" (saveLessonPlan)="handleSave($event)">
+                <button class="btn btn-link">
+                  <bi name="pencil-fill" class="icon-edit" />
+                </button>
+              </app-lesson-plan-modal>
+              <app-confirm-modal [item]="'Plano de Ensino'" [isEdit]="false" (deleteItem)="handleDelete(lessonPlan.id)">
+                <button class="btn btn-link">
+                  <bi name="trash" class="icon-edit" />
+                </button>
+              </app-confirm-modal>
+            </div>
+          </td>
+        </tr>
+        } @empty {
+        <tr>
+          <td colspan="4" style="text-align: center">Nenhum plano de ensino encontrado</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

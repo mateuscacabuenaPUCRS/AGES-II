@@ -1,0 +1,91 @@
+<div class="d-flex">
+  <div class="image-container w-50 h-98">
+    <img
+      id="image"
+      src="assets/loginImage.png"
+      alt="Login Image"
+      style="width: 100%; height: 100%; object-fit: cover" />
+    <div class="image-text-container">
+      <h1 id="image-text">Iniciação aos Esportes de Raquetes</h1>
+    </div>
+  </div>
+  <div class="container">
+    <button type="button" class="btn back-button" (click)="goBack()"><bi name="arrow-left" class="icon-back"></bi></button>
+    <img src="assets/ensLogo.png" alt="Logo" style="width: 100%; height: 30%" />
+    <h1 class="welcome d-flex justify-content-center py-3">
+      Preencha o formulário para fazer sua aula experimental!
+    </h1>
+    <form [formGroup]="form" (ngSubmit)="submit()">
+      <div class="form-group">
+        <div class="input-group">
+          <input
+            type="name"
+            formControlName="userName"
+            class="form-control"
+            placeholder="Nome completo"
+            [(ngModel)]="userName"
+            name="name" />
+        </div>
+
+        <div class="input-container">
+          <div class="input-group">
+            <input
+              type="email"
+              formControlName="userEmail"
+              class="form-control"
+              placeholder="Email"
+              [(ngModel)]="userEmail"
+              name="email" />
+          </div>
+          @if (form.controls['userEmail'].errors && form.controls['userEmail'].touched) {
+            <span #emailError class="email-error">Insira um email válido</span>
+          }
+        </div>
+
+        <div class="input-container">
+          <div class="input-group">
+            <input
+              type="tel"
+              formControlName="userPhone"
+              class="form-control"
+              placeholder="Telefone"
+              [(ngModel)]="userPhone"
+              name="phone" />
+          </div>
+          @if (form.controls['userPhone'].errors && form.controls['userPhone'].touched) {
+            <span #phoneError class="phone-error">Insira um telefone válido</span>
+          }
+        </div>
+
+        <div class="input-container">
+          <div class="input-group pt-1 pb-3">
+            <select class="form-select" formControlName="userInterest" [(ngModel)]="userInterest" name="interest">
+                <option value="" disabled selected>Interesse</option>
+                <option value="Tênis">Tênis</option>
+                <option value="Beach Tennis">Beach Tennis</option>
+                <option value="Ambos">Ambos</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="input-container">
+          <div class="input-group pt-1 pb-3">
+            <select class="form-select" formControlName="userAge" [(ngModel)]="userAge" name="age">
+                <option value="" disabled selected>Idade</option>
+                <option value="Adulto">Adulto</option>
+                <option value="Infantil">Infantil</option>
+            </select>
+          </div>
+        </div>
+      </div>
+    </form>
+
+    <button
+      id="submitBtn"
+      type="submit"
+      class="button btn mt-4 text-white"
+      (click)="submit()">
+      Finalizar Solicitação
+    </button>
+  </div>
+</div>

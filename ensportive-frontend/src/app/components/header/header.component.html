@@ -1,0 +1,35 @@
+<header class="navbar navbar-expand-lg navbar-light bg-light">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">
+      <img src="/assets/ensLogo.png" alt="Logo ENS" width="100" class="px-2">
+    </a>
+    <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent"
+      aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+      <span class="navbar-toggler-icon"></span>
+    </button>
+
+    <div class="collapse navbar-collapse justify-content-between" id="navbarSupportedContent">
+      <div class="nav-item d-flex align-items-center">
+        <span class="me-2">{{currentUser}}</span>
+        <a href="solicitacoes">
+          <bi name="bell" class="nav-icon"></bi>
+        </a>
+      </div>
+
+      <ul class="navbar-nav d-flex">
+        @for (item of navItems; track item) {
+        <li class="nav-item">
+          <a class="nav-link" [class.active]="item.route === getCurrentPath()" [routerLink]="item.route">{{ item.text
+            }}</a>
+        </li>
+        }
+
+        <li class="nav-item ms-4">
+          <a href="" (click)="onLogOut()">
+            <bi name="box-arrow-right" class="nav-icon" ></bi>
+          </a>
+        </li>
+      </ul>
+    </div>
+  </div>
+</header>

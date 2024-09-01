@@ -1,0 +1,14 @@
+@import '../../../theme/common';
+
+.col {
+    border-color: $blue-300 !important;
+}
+
+label {
+    color: $blue-700;
+}
+
+.modal-body {
+    max-height: 70vh; 
+    overflow-y: auto;
+}

@@ -1,0 +1,27 @@
+// potential bootstrap variable overrides here
+@import 'bootstrap/scss/mixins';
+@import 'bootstrap/scss/functions';
+@import 'bootstrap/scss/variables';
+@import 'bootstrap/scss/variables-dark';
+@import 'bootstrap/scss/maps';
+@import 'bootstrap/scss/utilities';
+
+//Brand Colors
+$white: #ffffff;
+$gray-100: #D9D9D9;
+$gray-700: #52525c;
+$gray-800: #343a40;
+$blue-100: #E6F2F9;
+$blue-300: #419ACF;
+$blue-400: #4796D0;
+$blue-500: #0784F8;
+$blue-600: #0670d4;
+$blue-700: #052A5E;
+$blue-800: #002E5E;
+$blue-900: #11395d;
+$yellow-400: #CCAA00;
+$yellow-100 : #FAF6E5;
+$black: #000000;
+$red-500: #FF0000;
+
+$primary: $blue-300;

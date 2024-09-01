@@ -1,0 +1,28 @@
+FROM node:21
+
+# Create app directory
+RUN mkdir -p /ensportive-frontend/src/app
+
+# Set working directory
+WORKDIR /ensportive-frontend/src/app
+
+# Copy package.json and package-lock.json (if exists)
+COPY package*.json ./
+
+# Install npm dependencies as root
+RUN npm install --unsafe-perm=true --allow-root
+
+# Install npm dependencies as root
+RUN npm i @angular/cli@17 -g
+
+# Change ownership of the app directory to node user
+RUN chown -R node:node /ensportive-frontend
+
+# Switch to node user
+USER node
+
+# Copy the rest of the application code
+COPY --chown=node:node . .  
+
+# Start the application
+CMD [ "ng", "serve", "--host", "0.0.0.0"]

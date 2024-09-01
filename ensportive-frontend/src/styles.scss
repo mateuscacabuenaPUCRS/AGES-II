@@ -1,0 +1,153 @@
+/* You can add global styles to this file, and also import other style files */
+
+/* Importing Bootstrap SCSS file. */
+@import 'theme/custom-bootstrap';
+@import "../node_modules/@ng-select/ng-select/themes/default.theme.css";
+// + custome global scss rules
+
+body{
+    font-family: 'Poppins', sans-serif;
+}
+
+
+h1 {
+  color: #{$blue-700};
+  font-weight: 600;
+}
+
+h4 {
+    color: #{$blue-700};
+    font-weight: 600;
+    font-weight: bold;
+  }
+
+.icon-search {
+  width: 2rem;
+  height: 2rem;
+  color: #{$blue-700};
+}
+
+.icon-edit {
+  width: 1.3rem;
+  height: 1.3rem;
+  color: #{$blue-700};
+}
+
+.btn-save {
+  --bs-btn-color: #{$white};
+  --bs-btn-bg: #{$blue-800};
+  --bs-btn-border-color: #{$blue-800};
+  --bs-btn-hover-color: #{$white};
+  --bs-btn-hover-bg: #{$blue-800};
+  --bs-btn-hover-border-color: #{$blue-800};
+}
+
+.btn-cancel {
+  --bs-btn-color: #{$gray-700};
+  --bs-btn-bg: #{$white};
+  --bs-btn-border-color: #{$gray-700};
+  --bs-btn-hover-color: #{$gray-700};
+  --bs-btn-hover-bg: #{$white};
+  --bs-btn-hover-border-color: #{$gray-700};
+}
+
+.inputs {
+  color: #{$blue-700};
+  font-weight: 600;
+  font-style: normal;
+}
+
+.form-check {
+  color: #{$gray-800};
+  font-weight: 300;
+  font-style: normal;
+}
+
+.list-actions {
+  display: flex;
+  justify-content: end;
+}
+
+.fc {
+  .fc-toolbar-title {
+    text-transform: capitalize;
+  }
+
+  .fc-button-primary {
+    background-color: $blue-900;
+    border-color: $blue-900;
+
+    &:not(:disabled).fc-button-active, &:not(:disabled):active {
+      background-color: $blue-400;
+      border-color: $blue-400;
+    }
+
+    &:hover, &:focus {
+      background-color: $blue-300;
+      border-color: $blue-300;
+    }
+  }
+
+  .fc-col-header-cell-cushion {
+    color: $black;
+    text-decoration: none;
+    text-transform: capitalize;
+  }
+
+  .fc-daygrid-day-number {
+    color: $black;
+    text-decoration: none;
+  }
+
+  .fc-daygrid-event {
+    color: $blue-700;
+    overflow-x: hidden;
+
+    b {
+      color: $blue-800;
+      font-weight: 600;
+      margin-right: 5px;
+    }
+  }
+  .fc-timegrid-event {
+    overflow: hidden;
+    background-color: $blue-500;
+  }
+
+  .fc-daygrid-day.fc-day-today {
+    background-color: $blue-100;
+  }
+  .fc-timegrid-col.fc-day-today {
+    background-color: $blue-100;
+  }
+
+  .fc-list-day-text, .fc-list-day-side-text, .fc-timegrid-axis-cushion {
+    color: $black;
+    text-decoration: none;
+    text-transform: capitalize;
+  }
+
+  .fc-list-event-dot {
+    border-color: $blue-500;
+  }
+}
+
+@media (max-width: 576px) {
+  .fc {
+    .fc-toolbar.fc-header-toolbar {
+      flex-direction: column;
+    }
+
+    .fc-toolbar-title {
+      margin: .5em 0;
+    }
+
+    .fc-daygrid-day-frame {
+      min-height: 50px;
+    }
+
+    .fc-view-harness {
+      height: 336px !important;
+    }
+  }
+}

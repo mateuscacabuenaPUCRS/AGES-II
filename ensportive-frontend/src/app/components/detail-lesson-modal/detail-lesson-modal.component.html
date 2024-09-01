@@ -1,0 +1,120 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center gap-3" id="modal-basic-title"> <strong>{{title}}</strong> </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <div class=description>
+      <p> <strong>Data: </strong>{{lessonDate}}</p>
+      <p> <strong>Quadra: </strong>{{lesson.course?.court}}</p>
+      <p> <strong>Nível: </strong>{{getLevelName(lesson.course?.level)}}</p>
+      <p> <strong>Professor: </strong>{{lesson.teacher?.name}}</p>
+    </div>
+    <!-- students -->
+    <div class="d-flex flex-column">
+      <div class="students">
+        <span><strong>Alunos Recorrentes:</strong></span>
+        <div class="students-list">
+          @if(lesson.courseStudents && lesson.courseStudents.length > 0) {
+          <ul>
+            @for (student of lesson.courseStudents; track student.id; let i = $index) {
+            <li [ngClass]="verifyIsStudentAbsent(student.student) ? 'text-danger' : ''">
+              {{ student.student.name }}
+              @if (verifyIsStudentAbsent(student.student)) {
+              <span class="text-danger"> (Falta) </span>
+              }
+            </li>
+            }
+          </ul>
+          } @else {
+          <ul>
+            <p> Nenhum Aluno</p>
+          </ul>
+          }
+        </div>
+      </div>
+
+      <!-- one time only students-->
+      <div class="students">
+        <span><strong>Alunos de Presença Única:</strong></span>
+        <div class="students-list">
+          <ul>
+            <div *ngIf="additionalStudents.length === 0">
+              <p> Nenhum Aluno</p>
+            </div>
+            <li *ngFor="let student of additionalStudents" [ngClass]="verifyIsStudentAbsent(student) ? 'text-danger' : ''">
+              {{ student.name }}
+              @if (verifyIsStudentAbsent(student)) {
+              <span class="text-danger"> (Falta) </span>
+              }
+              @if (isAdmin) {
+              <button class="btn btn-link" (click)="removeStudent(student)">
+                <bi name="trash" class="icon-edit" />
+              </button>
+              }
+            </li>
+          </ul>
+        </div>
+      </div>
+    </div>
+    <!-- add one time only student student -->
+    @if (isAdmin) {
+    <div *ngIf="showStudentsToAdd && isAdmin">
+      <ng-select [(ngModel)]="selectedStudent" (ngModelChange)="addStudent()">
+        <ng-option *ngFor="let student of students" [value]="student">
+          {{ student.name }}
+        </ng-option>
+      </ng-select>
+    </div>
+    <div>
+      <button class="add-student" (click)="toggleShowStudentsToAdd()"> <Strong> {{addStudentButtonText}}
+        </Strong></button>
+    </div>
+    }
+
+    @if (lesson.lessonPlan) {
+    <app-lesson-plan-modal [lessonPlan]="lesson.lessonPlan" [viewOnly]="true">
+      <button class="lesson-plan-button"> <Strong>Ver plano de aula </Strong></button>
+    </app-lesson-plan-modal>
+    }
+
+    <div class="review">
+      <label for="description"> <Strong>Avaliação</Strong></label>
+      <textarea class="text-area" id="description" name="description" rows="5" cols="33"
+        placeholder="Deixe aqui a sua avaliação..." [(ngModel)]="description" (change)="setFormChanged()" [disabled]="isAdmin"></textarea>
+    </div>
+  </div>
+  <div class="modal-footer d-flex justify-content-between">
+    @if (!isAdmin && !isAbsent) {
+    <div>
+      <app-request-modal (saveRequest)="handleSaveAbsence($event)" [lessonId]="lesson.id || ''" [isAbsent]="isAbsent">
+        <button type="button" class="btn btn-danger text-white">
+          Avisar Falta
+        </button>
+      </app-request-modal>
+    </div>
+    }
+    @if (!isAdmin && isAbsent) {
+    <div>
+      <p class="text-danger"> Você avisou falta para esta aula. </p>
+    </div>
+    }
+    <div class="d-flex justify-content-end" [ngClass]="isAdmin ? 'w-100' : ''">
+      @if (isAdmin) {
+      <button type="button" class="btn btn-save me-2" (click)="modal.dismiss('Cancelar operação')">
+        Concluído
+      </button>
+      } @else {
+      <button type="button" class="btn btn-save me-2" (click)="modal.dismiss('Cancelar operação')">
+        Cancelar
+      </button>
+      <button type="submit" class="btn btn-save" (click)="handleSave()" [disabled]="!hasFormChanged">
+        Salvar
+      </button>
+      }
+    </div>
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

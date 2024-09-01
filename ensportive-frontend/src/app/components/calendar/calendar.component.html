@@ -1,0 +1,15 @@
+<div class='calendar'>
+  <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+    <ng-template #eventContent let-arg>
+      @if (getLesson(arg.event.id)) {
+      <app-detail-lesson [lesson]="getLesson(arg.event.id)" class="event-container" (refreshLesson)="loadCourses()">
+        <div class="event">
+          <b>{{ arg.timeText }}H</b>
+          <i>{{ arg.event.title }}</i>
+        </div>
+      </app-detail-lesson>
+      }
+    </ng-template>
+  </full-calendar>
+</div>
+<app-course-modal #courseModal (saveCourse)="onSave($event)"></app-course-modal>

@@ -1,0 +1,37 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center gap-3" id="app-admin-modal">
+      {{ isEdit ? 'Editar Administrador' : 'Cadastrar Administrador' }}
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Exit click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="save()" class="inputs">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="username" class="form-label">Username</label>
+          <input type="text" class="form-control" id="username" formControlName="username" />
+          <div *ngIf="form.get('username')?.invalid && form.get('username')?.touched" class="text-danger">
+            Usuário é obrigatório.
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="password">Senha</label>
+          <input type="password" class="form-control" id="password" formControlName="password" />
+          <div *ngIf="form.get('password')?.invalid && form.get('password')?.touched" class="text-danger">
+            Senha é obrigatória.
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" (click)="modal.dismiss('Cancel click')">Cancelar</button>
+        <button type="submit" class="btn btn-save" [disabled]="form.invalid">Salvar</button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

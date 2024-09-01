@@ -1,0 +1,68 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">Cadastrar Usuário</h4>
+    <button
+      type="button"
+      class="btn-close"
+      aria-label="Close"
+      (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form #form="ngForm" (ngSubmit)="save()">
+      <div class="col">
+        <label for="username" class="form-label">Usuário</label>
+        <input
+          type="text"
+          class="form-control"
+          id="username"
+          name="username"
+          [(ngModel)]="username"
+          required />
+        <div
+          *ngIf="
+            form.controls['username'].invalid &&
+            (form.controls['username'].dirty ||
+              form.controls['username'].touched)
+          "
+          class="text-danger">
+          Usuário é obrigatório.
+        </div>
+      </div>
+      <div class="col">
+        <label for="password" class="form-label">Senha</label>
+        <input
+          type="password"
+          class="form-control"
+          id="password"
+          name="password"
+          [(ngModel)]="password"
+          required />
+        <div
+          *ngIf="
+            form.controls['password'].invalid &&
+            (form.controls['password'].dirty ||
+              form.controls['password'].touched)
+          "
+          class="text-danger">
+          Senha é obrigatório.
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button
+          type="button"
+          class="btn btn-secondary"
+          (click)="modal.dismiss('cancel click')">
+          Fechar
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<div
+  (click)="open(content)"
+  tabindex="0"
+  (keyup.enter)="open(content)"
+  (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

@@ -1,0 +1,68 @@
+@import '../../../theme/common';
+
+.navbar {
+  border-bottom: 1px solid $blue-100;
+}
+
+.nav-item {
+  .nav-avatar {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: $primary;
+    background-color: rgba($primary, 0.3);
+  }
+
+  .nav-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: $primary;
+
+    &:hover {
+      color: $blue-800;
+    }
+  }
+
+  .nav-link {
+    &.active {
+      color: $primary;
+      border-bottom: 2px solid $primary;
+
+      &:hover {
+        color: $primary;
+      }
+    }
+
+    &:hover {
+      color: $blue-800;
+    }
+  }
+}
+
+.navbar-toggler {
+  border: none;
+}
+
+.navbar-nav {
+  align-items: center;
+}
+
+@media screen and (max-width: 768px){
+  .navbar-nav {
+    margin-top: .5rem;
+    align-items: flex-start;
+
+    .nav-item {
+      margin-left: 0 !important;
+      .nav-link {
+        &.active {
+          border-bottom: none;
+        }
+      }
+
+      .nav-icon {
+        margin-top: .5rem;
+      }
+    }
+
+  }
+}

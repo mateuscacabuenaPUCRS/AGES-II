@@ -1,0 +1,122 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center gap-3" id="app-lesson-plan-modal">
+      @if(viewOnly) {
+        <span>Visualizar Plano de Ensino</span>  
+      } @else if (isEdit) {
+      Editar Plano de Ensino<bi name="pencil-fill" class="icon-edit"></bi>
+      } @else {
+        <span>Cadastrar Plano de Ensino</span>
+      }
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Exit click')"></button>
+  </div>
+  <div class="modal-body">
+    <form #form="ngForm" (ngSubmit)="save()">
+      <div class="container">
+        <div class="row">
+          <div class="col border-top border-start border-end">
+            <div class="mb-3 p-1">
+              <label for="name" class="form-label fw-bold">Objetivo</label>
+              <input
+                type="text"
+                [readonly]="viewOnly ? 'readonly' : null"
+                class="form-control"
+                name="modality"
+                id="modality"
+                [(ngModel)]="modality" />
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col border-top border-end border-start">
+            <div class="mb-3 p-1">
+              <label for="level" class="form-label fw-bold">Categoria</label>
+              <select class="form-select" [(ngModel)]="level" id="level" name="level">
+                <option value="">Selecione o nível</option>
+                <option *ngFor="let level of levelEnum" [value]="level.key">{{ level.value }}</option>
+              </select>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col border-top border-start border-end">
+            <div class="mb-3 p-1">
+              <label for="warmUp" class="form-label fw-bold"
+                >Aquecimento/Físico</label>
+              <textarea
+                class="form-control"
+                id="warmUp"
+                name="warmUp"
+                [(ngModel)]="warmUp"
+                [readonly]="viewOnly ? 'readonly' : null"
+                rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col border-start border-top border-end">
+            <div class="mb-3 p-1">
+              <label for="technique1" class="form-label fw-bold">1 - Técnica</label>
+              <textarea class="form-control" id="technique1" name="technique1" [(ngModel)]="technique1"
+                [readonly]="viewOnly ? 'readonly' : null"
+                rows="3"></textarea>
+            </div>
+          </div>
+          <div class="col border-top border-end">
+            <div class="mb-3 p-1">
+              <label for="technique2" class="form-label fw-bold">2 - Técnica</label>
+              <textarea class="form-control" id="technique2" name="technique2" [(ngModel)]="technique2" [readonly]="viewOnly ? 'readonly' : null"
+                rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col border-top border-end border-start">
+            <div class="mb-3 p-1">
+              <label for="tactic" class="form-label fw-bold">3 - Tática</label>
+              <textarea class="form-control" id="tactic" name="tactic" [(ngModel)]="tactic" rows="3" [readonly]="viewOnly ? 'readonly' : null"></textarea>
+            </div>
+          </div>
+          <div class="col border-top border-end">
+            <div class="mb-3 p-1">
+              <label for="serve" class="form-label fw-bold">4 - Saque</label>
+              <textarea class="form-control" id="serve" name="serve" [readonly]="viewOnly ? 'readonly' : null" [(ngModel)]="serve" rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+        <div class="row">
+          <div class="col border">
+            <div class="mb-3 p-1">
+              <label for="social" class="form-label fw-bold">Jogo/Social</label>
+              <textarea
+                class="form-control"
+                id="social"
+                [readonly]="viewOnly ? 'readonly' : null"
+                name="social"
+                [(ngModel)]="social"
+                rows="3"></textarea>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        @if(!viewOnly) {
+          <button type="button" class="btn btn-cancel" (click)="modal.dismiss('Cancelar operação')">
+            Cancelar
+          </button>
+          @if(isEdit) {
+          <app-confirm-modal [item]="'Plano de Ensino'" [isEdit]="true" (saveItem)="save()">
+            <button type="button" class="btn btn-save">Salvar</button>
+          </app-confirm-modal>
+          } @else {
+          <button type="submit" class="btn btn-save">Salvar</button>
+          }
+        }
+      </div>
+    </form>
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

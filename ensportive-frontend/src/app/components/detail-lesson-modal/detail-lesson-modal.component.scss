@@ -1,0 +1,54 @@
+@import '../../../theme/common.scss';
+p {
+    margin: 0;
+}
+.description {
+    color: #{$gray-700};
+}
+.review {
+    display: flex;
+    flex-direction: column;
+    color: #{$gray-700};
+}
+.text-area {
+    color: #{$gray-700};
+    border-color: #{$gray-100};
+    resize: none;
+    border-radius: 8px;
+}
+.students {
+    color: #{$gray-700};
+}
+.students-list {
+    color: #{$gray-700};
+    position: relative;
+}
+.absent-student{
+    display: inline;
+}
+.absent {
+  opacity: 0.5;
+}
+.add-student{
+    border: none;
+    background-color: transparent;  
+    display: flex;  
+    color: #{$blue-400};
+    padding-bottom: 16px;
+}
+.class-plan-button {
+    border: none;
+    background-color: transparent;  
+    display: flex;  
+    color: #{$blue-400};
+    padding-bottom: 16px;
+}
+
+.lesson-plan-button {
+    border: none;
+    background-color: transparent;  
+    display: flex;  
+    color: #{$blue-400};
+    padding-bottom: 16px;
+}
+

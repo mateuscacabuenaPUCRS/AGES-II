@@ -1,0 +1,34 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center gap-3" id="app-confirm-modal-title">
+      @if(isEdit){
+      Editar {{item}}<bi name="pencil-fill" class="icon-edit"></bi>
+      } @else {
+      Excluir {{item}}<bi name="trash" class="icon-edit"></bi>
+      }
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Exit click')"></button>
+  </div>
+  <div class="modal-body">
+    <p>
+      Você tem certeza que deseja
+      @if(isEdit){
+      editar
+      } @else {
+      excluir
+      }
+      este item?
+    </p>
+  </div>
+  <div class="modal-footer">
+    <button type="button" class="btn btn-cancel" (click)="modal.dismiss('Cancel click')">Cancelar</button>
+    @if(isEdit){
+    <button type="button" class="btn btn-save" (click)="save()">Salvar</button>
+    } @else {
+    <button type="button" class="btn btn-save" (click)="delete()">Deletar</button>
+    }
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

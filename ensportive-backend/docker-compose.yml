@@ -1,0 +1,35 @@
+version: "3.8"
+
+services:
+  postgresql:
+    image: postgres
+    restart: always
+    container_name: ensportive-postgresql
+    environment:
+      - POSTGRES_USER=ensportive
+      - POSTGRES_PASSWORD=a12345678
+      - POSTGRES_DB=ensportive_db
+    ports:
+      - "5432:5432"
+    volumes:
+      - ensportive-db:/var/lib/postgresql/data
+
+  backend:
+    container_name: ensportive-backend
+    build:
+      context: ./
+      dockerfile: Dockerfile
+    ports:
+      - "8080:8080"
+    volumes:
+      - ./ensportive-backend:/app
+    environment:
+      - SPRING_DATASOURCE_URL=jdbc:postgresql://postgresql:5432/ensportive_db
+      - SPRING_DATASOURCE_USERNAME=ensportive
+      - SPRING_DATASOURCE_PASSWORD=a12345678
+      - SPRING_PROFILES_ACTIVE=prod
+    depends_on:
+      - postgresql
+
+volumes:
+  ensportive-db:

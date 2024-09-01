@@ -1,0 +1,15 @@
+spring:
+  application:
+    name: Ensportive
+  datasource:
+    url: jdbc:postgresql://localhost:5432/ensportive_db
+    username: ensportive
+    password: a12345678
+  sql:
+    init:
+      mode: always
+  jpa:
+    hibernate:
+      ddl-auto: update
+    show-sql: true
+    defer-datasource-initialization: true

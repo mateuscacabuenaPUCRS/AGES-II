@@ -1,0 +1,145 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center gap-3" id="app-student-modal">
+      @if(isEdit) {
+      Editar Aluno<bi name="pencil-fill" class="icon-edit"></bi>
+      }
+      @else {
+      <span>Cadastrar Aluno</span>
+      }
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Exit click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="save()" class="inputs">
+      <div class="row mb-3">
+        <div class="col">
+          <label for="name" class="form-label">Nome Completo</label>
+          <input type="text" class="form-control" id="name" formControlName="name" />
+          <div *ngIf="form.get('name')?.invalid && form.get('name')?.touched" class="text-danger">
+            Nome é obrigatório.
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="email" class="form-label">E-mail</label>
+          <input type="email" class="form-control" id="email" formControlName="email" />
+          <div *ngIf="form.get('email')?.invalid && form.get('email')?.touched" class="text-danger">
+            <div *ngIf="form.get('email')?.errors?.['required']">E-mail é obrigatório.</div>
+            <div *ngIf="form.get('email')?.errors?.['email']">E-mail inválido.</div>
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="cellPhone">Telefone</label>
+          <input type="text" class="form-control" id="cellPhone" formControlName="cellPhone" />
+          <div *ngIf="form.get('cellPhone')?.invalid && form.get('cellPhone')?.touched" class="text-danger">
+            Telefone é obrigatório.
+          </div>
+        </div>
+        <div class="col">
+          <label for="level">Nível</label>
+          <select class="form-select" id="level" formControlName="level">
+            <option value="">Selecione o nível</option>
+            <option value="BEGINNER_1">Iniciante 1</option>
+            <option value="BEGINNER_2">Iniciante 2</option>
+            <option value="INTERMEDIATE_1">Intermediário 1</option>
+            <option value="INTERMEDIATE_2">Intermediário 2</option>
+            <option value="ADVANCED">Avançado</option>
+            <option value="ELITE">Elite</option>
+          </select>
+          <div *ngIf="form.get('level')?.invalid && form.get('level')?.touched" class="text-danger">
+            Nível é obrigatório.
+          </div>
+        </div>
+      </div>
+      <div class="row mb-3">
+        <div class="col">
+          <label for="active" class="form-label">Licença Ativa</label>
+          <select class="form-select" id="active" formControlName="active" (change)="updateLicenseValidators()">
+            <option [ngValue]="true">Sim</option>
+            <option [ngValue]="false">Não</option>
+          </select>
+        </div>
+      </div>
+
+      <div *ngIf="form.get('active')?.value">
+        <hr>
+        <h4 class="text-center mb-3">Dados da Licença</h4>
+        <div class="row mb-3 gap-4">
+          <div class="col">
+            <label for="startDate" class="form-label">Data de Início</label>
+            <input type="date" class="form-control" id="startDate" formControlName="startDate" />
+            <div *ngIf="form.get('startDate')?.invalid && form.get('startDate')?.touched" class="text-danger">
+              Data de Início é obrigatória.
+            </div>
+          </div>
+          <div class="col">
+            <label for="endDate" class="form-label">Data de Término</label>
+            <input type="date" class="form-control" id="endDate" formControlName="endDate" />
+            <div *ngIf="form.get('endDate')?.invalid && form.get('endDate')?.touched" class="text-danger">
+              <div *ngIf="form.get('endDate')?.errors?.['required']">Data de Término é obrigatória.</div>
+              <div *ngIf="form.get('endDate')?.errors?.['dateAfter']">Data de Término deve ser depois da Data de Início.
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3 gap-4">
+          <div class="col">
+            <label for="planType" class="form-label">Tipo de Plano</label>
+            <select class="form-select" id="planType" formControlName="planType">
+              <option *ngFor="let planType of PlanTypeEnum" [value]="planType.key">{{planType.value}}</option>
+            </select>
+            <div *ngIf="form.get('planType')?.invalid && form.get('planType')?.touched" class="text-danger">
+              Tipo de Plano é obrigatório.
+            </div>
+          </div>
+          <div class="col">
+            <label for="frequency" class="form-label">Frequência</label>
+            <select class="form-select" id="frequency" formControlName="frequency">
+              <option *ngFor="let freq of translateFrequency" [value]="freq.key">{{freq.value}}</option>
+            </select>
+            <div *ngIf="form.get('frequency')?.invalid && form.get('frequency')?.touched" class="text-danger">
+              Frequência é obrigatória.
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="coursesPerWeek" class="form-label">Aulas por Semana</label>
+            <input type="number" class="form-control" id="coursesPerWeek" formControlName="coursesPerWeek" />
+            <div *ngIf="form.get('coursesPerWeek')?.invalid && form.get('coursesPerWeek')?.touched" class="text-danger">
+              Aulas por Semana é obrigatório e deve ser maior que 0.
+            </div>
+          </div>
+        </div>
+        <div class="row mb-3">
+          <div class="col">
+            <label for="sport">Esportes</label>
+            <select class="form-select" id="sport" formControlName="sport">
+              <option [value]="'TENNIS'">Tênis</option>
+              <option [value]="'BEACH_TENNIS'">Beach Tennis</option>
+              <option [value]="'ALL'">Ambos</option>
+            </select>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" (click)="modal.dismiss('Cancel click')">Cancelar</button>
+        @if(isEdit) {
+        <app-confirm-modal [item]="'Aluno'" [isEdit]="true" (saveItem)="save()">
+          <button type="button" class="btn btn-save" [disabled]="form.invalid">Salvar</button>
+        </app-confirm-modal>
+        } @else {
+        <button type="submit" class="btn btn-save" [disabled]="form.invalid">Salvar</button>
+        }
+      </div>
+    </form>
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

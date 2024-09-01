@@ -1,0 +1,32 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    @if (!isAbsent) {
+    <h4 class="modal-title" id="modal-basic-title">
+      Solicitar Falta
+    </h4>
+    }
+    @else {
+    <h4 class="modal-title" id="modal-basic-title">
+      Desfazer Solicitação de Falta
+    </h4>
+    }
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form #form="ngForm" (ngSubmit)="save()">
+      <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <textarea class="form-control" id="description" rows="3" [(ngModel)]="description"
+          name="description"></textarea>
+      </div>
+
+      <div class="modal-footer">
+        <button type="submit" class="btn btn-primary">Salvar</button>
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')"> Fechar </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

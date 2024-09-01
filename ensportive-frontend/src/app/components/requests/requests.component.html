@@ -1,0 +1,82 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1>Solicitações</h1>
+    <div class="d-flex align-items-center">
+      <input id="search-input" type="text" class="form-control border rounded" placeholder="Buscar"
+        [formControl]="filter" />
+    </div>
+  </div>
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          @if (isAdmin) {
+          <!-- Nome do Aluno, Status, Tipo, Data criação -->
+          <th scope="col">Nome do Aluno</th>
+          <th scope="col">Status</th>
+          <th scope="col">Tipo</th>
+          <th scope="col">Data de Criação</th>
+          <th></th>
+          } @else {
+          <!-- status, Data da Aula, Data de Criação, Tipo -->
+          <th scope="col">Status</th>
+          <th scope="col">Data da Aula</th>
+          <th scope="col">Data de Criação</th>
+          <th scope="col">Tipo</th>
+          }
+        </tr>
+      </thead>
+      <tbody>
+        @for (request of filteredRequests$ | async; track request.id; let i = $index) {
+        @if (isAdmin) {
+        <tr class="align-middle">
+          <td>
+            @if (request.student) {
+            <ngb-highlight [result]="request.student.name" [term]="filter.value" />
+            } @else {
+            <ngb-highlight [result]="request.userName" [term]="filter.value" />
+            }
+          </td>
+          <td>
+            <ngb-highlight [result]="getRequestStatusToString(request.requestStatus)" [term]="filter.value" />
+          </td>
+          <td>
+            <ngb-highlight [result]="getRequestTypeToString(request.requestType)" [term]="filter.value" />
+          </td>
+          <td>
+            <ngb-highlight [result]="formatDate(request.creationDate)" [term]="filter.value" />
+          </td>
+          <td>
+            @if (request.requestStatus === 'REQUESTED') {
+            <app-admin-request-modal (saveRequest)="handleRequestApproval($event)" [request]="request">
+              <button class=" btn btn-link">
+                <bi name="eye-fill" class="icon-edit"></bi>
+              </button>
+            </app-admin-request-modal>
+            }
+          </td>
+          }
+          @else {
+        <tr class="align-middle">
+          <td>
+            <ngb-highlight [result]="getRequestStatusToString(request.requestStatus)" [term]="filter.value" />
+          </td>
+          <td>
+            <ngb-highlight [result]=formatDate(request.lesson?.date) [term]="filter.value" />
+          </td>
+          <td>
+            <ngb-highlight [result]="formatDate(request.creationDate)" [term]="filter.value" />
+          </td>
+          <td>
+            <ngb-highlight [result]="getRequestTypeToString(request.requestType)" [term]="filter.value" />
+        </tr>
+        }
+        } @empty {
+        <tr>
+          <td colspan="4" style="text-align: center">Nenhuma solicitação encontrada</td>
+        </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

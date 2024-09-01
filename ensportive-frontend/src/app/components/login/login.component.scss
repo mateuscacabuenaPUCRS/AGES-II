@@ -1,0 +1,70 @@
+@import '../../../theme/common';
+
+.container{
+    background-color: $yellow-100;
+    padding: 10% 12% 0 12%;
+    width: 50%;
+    height: 100vh;
+    @media (max-width: 768px) {
+        width: 100%;
+        height: 100vh;
+        max-width: 100% !important;
+    }
+}
+
+.welcome{
+    font-size: 1.7rem;
+    font-weight: 700;
+    color: $blue-800;
+}
+
+.link-text-btn{
+    padding-top: 0.5rem;
+    font-size: 10px;
+    color: $blue-600;
+}
+
+.button{
+    width: 100%;
+    background-color: $blue-800;
+}
+
+.no-account{
+    gap: 0.1rem; 
+}
+
+.no-account-txt{
+    padding-top: 0.5rem;
+    font-size: 10px;
+}
+
+.nav-icon {
+    width: 1.3rem;
+    height: 1.3rem;
+    color: $blue-800;
+}
+
+.pass-icon{
+    &:hover {
+    color: $blue-300;
+    }
+}
+
+.welcome-img {
+    height: 100vh;
+    width: 50%;
+    @media (max-width: 768px) {
+        display: none;
+    }
+}
+
+.error-message {
+    color: $red-500;
+    padding: 2% 0%;
+    text-align: left;
+    display: none;
+}
+
+.password-box {
+    gap: 2rem;
+}

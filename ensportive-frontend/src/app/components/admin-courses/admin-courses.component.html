@@ -1,0 +1,72 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1>Turmas</h1>
+    <div class="d-flex align-items-center gap-2">
+      <app-course-modal (saveCourse)="handleSave($event)">
+        <button class="btn btn-link"><bi name="plus-square" class="icon-search"/></button>
+      </app-course-modal>
+      <input id="search-input" type="text" class="form-control border rounded" placeholder="Buscar" [formControl]="filter"/>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Esporte</th>
+          <th scope="col">Nível</th>
+          <th scope="col">Tipo Plano</th>
+          <th scope="col">Dia</th>
+          <th scope="col">Hora</th>
+          <th scope="col">No de alunos</th>
+          <th scope="col">Aula única</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (course of filteredCourses$ | async; track course.id; let i = $index) {
+          <tr class="align-middle">
+            <td><ngb-highlight [result]="getSport(course.sport)" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="getLevel(course.level)" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="getPlanType(course.planType)" [term]="filter.value" /></td>
+
+            @if (course.uniqueLesson) {
+              <td><ngb-highlight [result]="course.uniqueDate" [term]="filter.value" /></td>
+            } @else {
+              <td><ngb-highlight [result]="getWeekDay(course.weekDay)" [term]="filter.value" /></td>
+            }
+            <td><ngb-highlight [result]="course.hour" [term]="filter.value" /></td>
+
+            <td><ngb-highlight [result]="course.studentsSize | number" [term]="filter.value" /></td>
+
+            @if (course.uniqueLesson) {
+              <td><ngb-highlight [result]="'Sim'" [term]="filter.value" /></td>
+            } @else {
+              <td><ngb-highlight [result]="'Não'" [term]="filter.value" /></td>
+            }
+            <td>
+              <div class="list-actions">
+                <app-course-modal [course]="course" (saveCourse)="handleSave($event)">
+                  <button class="btn btn-link">
+                    <bi name="pencil-fill" class="icon-edit" />
+                  </button>
+                </app-course-modal>
+                <app-confirm-modal [item]="'Turma'" [isEdit]="false" (deleteItem)="handleDelete(course.id)">
+                  <button class="btn btn-link">
+                    <bi name="trash" class="icon-edit" />
+                  </button>
+                </app-confirm-modal>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="7" style="text-align: center">
+              Nenhuma turma encontrada
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

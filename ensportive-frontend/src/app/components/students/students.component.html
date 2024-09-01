@@ -1,0 +1,93 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1>Alunos</h1>
+    <div class="d-flex align-items-center gap-2">
+      <app-student-modal (saveStudent)="handleSave($event)">
+        <button class="btn btn-link">
+          <bi name="plus-square" class="icon-search" />
+        </button>
+      </app-student-modal>
+      <input
+        id="search-input"
+        type="text"
+        class="form-control border rounded"
+        placeholder="Buscar"
+        [formControl]="filter" />
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Email</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">Nível</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (
+          student of filteredStudents$ | async;
+          track student.id;
+          let i = $index
+        ) {
+          <tr class="align-middle">
+            <td>
+              <ngb-highlight [result]="student.name" [term]="filter.value" />
+            </td>
+            <td>
+              <ngb-highlight [result]="student.email" [term]="filter.value" />
+            </td>
+            <td>
+              <ngb-highlight
+                [result]="student.cellPhone"
+                [term]="filter.value" />
+            </td>
+            <td>
+              <ngb-highlight
+                [result]="translateLevels(student.level)"
+                [term]="filter.value" />
+            </td>
+            <td>
+              <div class="list-actions">
+                @if (student.username === null) {
+                  <app-new-student-user-modal
+                    [studentId]="student.id"
+                    [studentUserRegister]="studentUserRegister"
+                    (saveStudentUserRegister)="handleCreateUser($event)">
+                    <button type="button" class="btn btn-primary">
+                      Cadastrar Usuário
+                    </button>
+                  </app-new-student-user-modal>
+                }
+                <app-student-modal
+                  [student]="student"
+                  (saveStudent)="handleSave($event)">
+                  <button class="btn btn-link">
+                    <bi name="pencil-fill" class="icon-edit" />
+                  </button>
+                </app-student-modal>
+                <app-confirm-modal
+                  [item]="'Aluno'"
+                  [isEdit]="false"
+                  (deleteItem)="handleDelete(student.id)">
+                  <button class="btn btn-link">
+                    <bi name="trash" class="icon-edit" />
+                  </button>
+                </app-confirm-modal>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" style="text-align: center">
+              Nenhum aluno encontrado
+            </td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

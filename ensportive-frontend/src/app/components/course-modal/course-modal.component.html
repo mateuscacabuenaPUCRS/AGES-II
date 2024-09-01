@@ -1,0 +1,147 @@
+<!-- Conteúdo do modal -->
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title d-flex align-items-center gap-3" id="app-course-modal-title">
+      {{ isEdit ? 'Editar Turma' : 'Cadastrar Turma' }}
+      <bi name="pencil-fill" class="icon-edit" *ngIf="isEdit"></bi>
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Exit click')"></button>
+  </div>
+  <div class="modal-body">
+    <form [formGroup]="form" (ngSubmit)="save()">
+      <div class="row mb-4">
+        <div class="col">
+          <div class="form-group mb-4">
+            <label for="level">Nível:</label>
+            <select id="level" formControlName="level" class="form-select">
+              <option value="">Selecione o nível</option>
+              <option *ngFor="let level of levels" [value]="level.key">{{ level.value }}</option>
+            </select>
+            <div *ngIf="form.get('level')?.touched && form.get('level')?.invalid" class="text-danger">
+              Nível é obrigatório.
+            </div>
+          </div>
+          <div [ngSwitch]="form.get('uniqueLesson')?.value" class="form-group mb-4">
+            <div *ngSwitchCase="true" [@enterTrigger]="'fadeIn'">
+              <label for="uniqueDate">Data:</label>
+              <input type="date" id="uniqueDate" formControlName="uniqueDate" class="form-control">
+              <div *ngIf="form.get('uniqueDate')?.touched && form.get('uniqueDate')?.invalid" class="text-danger">
+                Data é obrigatória.
+              </div>
+            </div>
+            <div *ngSwitchCase="false" [@enterTrigger]="'fadeIn'">
+              <label for="weekDay">Dia da Semana:</label>
+              <select id="weekDay" formControlName="weekDay" class="form-select">
+                <option value=null>Selecione o dia da semana</option>
+                <option *ngFor="let weekDay of weekDays" [value]="weekDay.key">{{ weekDay.value }}</option>
+              </select>
+              <div *ngIf="form.get('weekDay')?.touched && form.get('weekDay')?.invalid" class="text-danger">
+                Dia da semana é obrigatório.
+              </div>
+            </div>
+          </div>
+          <div class="form-group mb-4">
+            <label for="sport">Esporte:</label>
+            <select id="sport" formControlName="sport" class="form-select">
+              <option value="">Selecione o esporte</option>
+              <option *ngFor="let sport of sports" [value]="sport.key">{{ sport.value }}</option>
+            </select>
+            <div *ngIf="form.get('sport')?.touched && form.get('sport')?.invalid" class="text-danger">
+              Esporte é obrigatório.
+            </div>
+          </div>
+          <div class="form-group mb-4">
+            <label for="teacherId">Professor:</label>
+            <select id="teacherId" formControlName="teacherId" class="form-select">
+              <option value="">Selecione o professor</option>
+              <option *ngFor="let teacherId of (teachers$ | async)" [value]="teacherId.id">{{ teacherId.name }}</option>
+            </select>
+            <div *ngIf="form.get('teacherId')?.touched && form.get('teacherId')?.invalid" class="text-danger">
+              Professor é obrigatório.
+            </div>
+          </div>
+
+           <div [formGroup]="form">
+            <label for="studentsIds">Adicionar Alunos: </label>
+            <ng-select formControlName="selectedStudent" (ngModelChange)="addStudent()">
+              <ng-option *ngFor="let student of students$ | async" [value]="student.id">
+                {{ student.name }}
+              </ng-option>
+            </ng-select>
+            <div *ngIf="form.get('studentsIds')?.touched && form.get('studentsIds')?.invalid" class="text-danger">
+              Deve ser selecionado pelo menos um aluno.
+            </div>
+          </div>
+
+          <div class="col">
+            <div class="form-check mt-4" *ngIf="!isEdit">
+              <input class="form-check-input" type="checkbox" id="uniqueLesson" formControlName="uniqueLesson">
+              <label class="form-check-label" for="uniqueLesson">Aula Única</label>
+            </div>
+          </div>
+        </div>
+        <div class="col">
+          <div class="form-group mb-4">
+            <label for="studentsSize">Número de Alunos:</label>
+            <input type="number" id="studentsSize" formControlName="studentsSize" class="form-control">
+            <div *ngIf="form.get('studentsSize')?.touched && form.get('studentsSize')?.invalid" class="text-danger">
+              Número de alunos é obrigatório e deve ser maior que zero.
+            </div>
+          </div>
+          <div class="form-group mb-4">
+            <label for="hour">Horário:</label>
+            <input type="time" id="hour" formControlName="hour" class="form-control">
+            <div *ngIf="form.get('hour')?.touched && form.get('hour')?.invalid" class="text-danger">
+              Horário é obrigatório.
+            </div>
+          </div>
+          <div class="form-group mb-4">
+            <label for="planType">Plano:</label>
+            <select id="planType" formControlName="planType" class="form-select">
+              <option value="">Selecione o tipo de plano</option>
+              <option *ngFor="let planType of planTypes" [value]="planType.key">{{ planType.value }}</option>
+            </select>
+            <div *ngIf="form.get('planType')?.touched && form.get('planType')?.invalid" class="text-danger">
+              Tipo de plano é obrigatório.
+            </div>
+          </div>
+          <div class="form-group mb-4">
+            <label for="court">Quadra: </label>
+            <input type="number" class="form-control" id="court" formControlName="court" />
+            <div *ngIf="form.get('court')?.invalid && form.get('court')?.touched" class="text-danger">
+              Quadra é obrigatório
+            </div>
+          </div>
+          <div class="form-group students">
+            <span><strong>Alunos Adicionados:</strong></span>
+            <div class="students-list">
+              <ul>
+                <div *ngIf="additionalStudents.length === 0">
+                  <p> Nenhum Aluno</p>
+                </div>
+                <li
+                  *ngFor="let student of additionalStudents">{{ student.name }}
+                  <button class="btn btn-link" (click)="removeStudent(student)">
+                    <bi name="trash" class="icon-edit" />
+                  </button>
+                </li>
+              </ul>
+            </div>
+          </div>
+        </div>
+
+      </div>
+      <div class="modal-footer">
+        <button type="button" class="btn btn-cancel" (click)="modal.dismiss('Cancel click')">
+          Cancelar
+        </button>
+        <button type="submit" class="btn btn-save" [disabled]="form.invalid">
+          {{ isEdit ? 'Salvar' : 'Cadastrar' }}
+        </button>
+      </div>
+    </form>
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>

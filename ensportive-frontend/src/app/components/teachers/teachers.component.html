@@ -1,0 +1,53 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1>Professores</h1>
+    <div class="d-flex align-items-center gap-2">
+      <app-teacher-modal (saveTeacher)="handleSave($event)">
+        <button class="btn btn-link"><bi name="plus-square" class="icon-search" /></button>
+      </app-teacher-modal>
+      <input id="search-input" type="text" class="form-control border rounded" placeholder="Buscar" [formControl]="filter">
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Nome</th>
+          <th scope="col">Email</th>
+          <th scope="col">Telefone</th>
+          <th scope="col">Categoria</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (teacher of filteredTeachers$ | async; track teacher.id; let i = $index) {
+          <tr class="align-middle">
+            <td><ngb-highlight [result]="teacher.name" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="teacher.email" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="teacher.cellPhone" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="getSportName(teacher.sport)" [term]="filter.value" /></td>
+            <td>
+              <div class="list-actions">
+                <app-teacher-modal [teacher]="teacher" (saveTeacher)="handleSave($event)">
+                  <button class="btn btn-link">
+                    <bi name="pencil-fill" class="icon-edit" />
+                  </button>
+                </app-teacher-modal>
+                <app-confirm-modal [item]="'Professor'" [isEdit]="false" (deleteItem)="handleDelete(teacher.id)">
+                  <button class="btn btn-link">
+                    <bi name="trash" class="icon-edit" />
+                  </button>
+                </app-confirm-modal>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" style="text-align: center">Nenhum professor encontrado</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

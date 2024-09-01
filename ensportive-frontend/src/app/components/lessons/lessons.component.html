@@ -1,0 +1,47 @@
+<div class="container mt-4">
+  <div class="d-flex align-items-center justify-content-between mb-4">
+    <h1>Aulas</h1>
+    <div class="d-flex align-items-center">
+      <input id="search-input" type="text" class="form-control border rounded" placeholder="Buscar" [formControl]="filter"/>
+    </div>
+  </div>
+
+  <div class="table-responsive">
+    <table class="table table-hover">
+      <thead>
+        <tr>
+          <th scope="col">Professor</th>
+          <th scope="col">Capacidade</th>
+          <th scope="col">Esporte</th>
+          <th scope="col">Data</th>
+          <th scope="col">Aula única</th>
+          <th></th>
+        </tr>
+      </thead>
+      <tbody>
+        @for (lesson of filteredLessons$ | async; track lesson.id; let i = $index) {
+          <tr class="align-middle">
+            <td><ngb-highlight [result]="lesson.teacher?.name || ''" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="lesson.spot" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="getSportName(lesson.course?.sport)" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="getDate(lesson.date)" [term]="filter.value" /></td>
+            <td><ngb-highlight [result]="lesson.course?.uniqueLesson ? 'Sim' : 'Não'" [term]="filter.value" /></td>
+            <td>
+              <div class="list-actions">
+                <app-detail-lesson [lesson]="lesson">
+                  <button class="btn btn-link">
+                    <bi name="eye-fill" class="icon-edit" />
+                  </button>
+                </app-detail-lesson>
+              </div>
+            </td>
+          </tr>
+        } @empty {
+          <tr>
+            <td colspan="4" style="text-align: center">Nenhuma aula encontrada</td>
+          </tr>
+        }
+      </tbody>
+    </table>
+  </div>
+</div>

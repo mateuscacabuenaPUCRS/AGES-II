@@ -1,0 +1,32 @@
+<ng-template #content let-modal>
+  <div class="modal-header">
+    <h4 class="modal-title" id="modal-basic-title">
+      {{ request.requestType === 'ABSENCE' ? 'Solicitação de Falta' : 'Solicitação de Aula Experimental' }}
+    </h4>
+    <button type="button" class="btn-close" aria-label="Close" (click)="modal.dismiss('Cross click')"></button>
+  </div>
+  <div class="modal-body">
+    <form #myForm="ngForm" (ngSubmit)="save()">
+      <div class="mb-3">
+        <label for="description" class="form-label">Descrição</label>
+        <textarea class="form-control" id="description" rows="3" [(ngModel)]="request.description" name="description"
+          disabled></textarea>
+      </div>
+
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-secondary" (click)="modal.dismiss('cancel click')"> Fechar </button>
+        @if (request.requestType === 'ABSENCE') {
+        <div class="d-flex gap-2">
+          <button type="button" class="btn btn-danger text-white"
+            (click)="setAction('deny'); myForm.ngSubmit.emit()">Negar</button>
+          <button type="button" class="btn btn-success text-white"
+            (click)="setAction('approve'); myForm.ngSubmit.emit()">Aprovar</button>
+        </div>
+        }
+      </div>
+    </form>
+  </div>
+</ng-template>
+<div (click)="open(content)" tabindex="0" (keyup.enter)="open(content)" (keyup.space)="open(content)">
+  <ng-content></ng-content>
+</div>
